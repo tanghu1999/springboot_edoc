@@ -26,7 +26,7 @@ spring:
   #设置JSON日期序列化输出格式，北京时间相对伦敦有8个小时时差所以使用GMT+8
   jackson:
     time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss SSS
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
     #格式化输出json格式数据
     serialization:
       indent-output: true

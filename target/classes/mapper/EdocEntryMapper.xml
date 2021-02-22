@@ -9,8 +9,11 @@
         <result property="summary" column="summary" />
         <result property="uploaduser" column="uploaduser" />
         <result property="createdate" column="createdate" />
-        <association property="edocCategory" column="categoryId"  select="com.th.mapper.EdocCategoryMapper.findById" />
-
+<!--        <association property="edocCategory" column="categoryId"  select="com.th.mapper.EdocCategoryMapper.findById" />-->
+        <association property="edocCategory" javaType="edocCategory" >
+            <id property="id" column="cid"/>
+            <result property="name" column="cname" />
+        </association>
     </resultMap>
 
     <sql id="baseColumn">
@@ -32,7 +35,7 @@
 
     <sql id="conditionColumn">
         <if test="categoryId!=null and categoryId!=-1">and categoryId=#{categoryId}</if>
-        <if test="title!=null and title.trim().length()>0"><![CDATA[and title like '%${title}%']]></if>
+        <if test="title!=null and title.trim().length()>0"><![CDATA[and title like concat('%',#{title},'%')]]></if>
         <if test="summary!=null and summary.trim().length()>0">and summary=#{summary}</if>
         <if test="uploaduser!=null and uploaduser.trim().length()>0">and uploaduser=#{uploaduser}</if>
         <if test="createdate!=null">and  <![CDATA[createdate >=  #{createdate}]]></if>
@@ -40,9 +43,15 @@
 
     </sql>
 
-    <select id="findAll" resultMap="edocEntryMapperMap">
-        SELECT <include refid="baseColumn" /> FROM edoc_entry
-    </select>
+<!--    <select id="findAll" resultMap="edocEntryMapperMap">-->
+<!--        SELECT <include refid="baseColumn" /> FROM edoc_entry-->
+<!--    </select>-->
+
+<!--    <select id="findAll" resultMap="edocEntryMapperMap">-->
+<!--        SELECT entry.id,categoryId,title,summary,uploaduser,createdate,category.id cid,category.name cname-->
+<!--        FROM edoc_entry entry,edoc_category category-->
+<!--        WHERE entry.categoryId=category.id-->
+<!--    </select>-->
 
     <select id="findById" parameterType="long" resultMap="edocEntryMapperMap">
         SELECT <include refid="baseColumn" /> FROM edoc_entry
@@ -52,8 +61,10 @@
     </select>
 
     <select id="findByCondition" parameterType="edocEntryCondition" resultMap="edocEntryMapperMap">
-        SELECT <include refid="baseColumn" /> FROM edoc_entry
+        SELECT entry.id,categoryId,title,summary,uploaduser,createdate,category.id cid,category.name cname
+        FROM edoc_entry entry,edoc_category category
         <where>
+            entry.categoryId=category.id
             <include refid="conditionColumn"  />
         </where>
     </select>

@@ -41,8 +41,8 @@ public class EdocApplication {
         Map<String ,String > param = new HashMap<String,String>();
         param.put("loginUsername" , "admin");
         param.put("loginPassword" , "123456");
-        param.put("allow" , "");//哪些IP允许访问后台“”代表所有地址
-        param.put("deny" , "33.31.51.88");//不允许这个IP访问
+        param.put("allow" , ""); //哪些IP允许访问后台“”代表所有地址
+        param.put("deny" , "33.31.51.88"); //不允许这个IP访问
         bean.setInitParameters(param);
         return bean;
     }
